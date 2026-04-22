@@ -302,8 +302,8 @@ tr:last-child td { border-bottom: none; }
   </div>
 </div>
 
-<!-- Booking Detail -->
-<div class="tables-area">
+<!-- Booking Detail (hidden) -->
+<div class="tables-area" style="display:none;">
   <div class="section-full">
     <div class="section-title">Booking Detail Snapshot (UL only)</div>
     <div class="table-scroll">
@@ -421,22 +421,7 @@ REPORT_DATA.podRows.forEach(function(r) {
   podBody.appendChild(row);
 });
 
-// Detail snapshot
-var detailBody = document.getElementById('detailBody');
-REPORT_DATA.records.forEach(function(r) {
-  var row = document.createElement('tr');
-  row.innerHTML =
-    '<td>' + r.bkgInfo + '</td>' +
-    '<td>' + r.polCd + '</td>' +
-    '<td>' + r.podCd + '</td>' +
-    '<td>' + (r.delCd || '—') + '</td>' +
-    '<td>' + r.contVol1 + '</td>' +
-    '<td>' + r.contVol2 + '</td>' +
-    '<td><strong>' + r.teu + '</strong></td>' +
-    '<td>' + r.bkgOfcCd + '</td>' +
-    '<td>' + fmtDate(r.frstEtd) + '</td>';
-  detailBody.appendChild(row);
-});
+// Detail snapshot (hidden)
 </script>
 </body>
 </html>

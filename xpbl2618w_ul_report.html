@@ -257,6 +257,7 @@ tr:last-child td { border-bottom: none; }
           <th>Alloc</th>
           <th>Current</th>
           <th>Gap</th>
+          <th>ETD</th>
           <th>Status</th>
         </tr>
       </thead>
@@ -382,12 +383,14 @@ allocRows.forEach(function(r) {
 
   var allocText = r.alloc === null ? '<span class="tbd">TBD</span>' : r.alloc;
   var gapText = r.gap === null ? '<span class="tbd">—</span>' : r.gap;
+  var etdText = r.etd ? (function(s){s=String(s).replace(/-/g,'');return s.length===8?s.substring(0,4)+'-'+s.substring(4,6)+'-'+s.substring(6,8):s.substring(0,10);})(r.etd) : '<span class="tbd">—</span>';
 
   row.innerHTML =
     '<td><strong>' + r.pol + '</strong></td>' +
     '<td>' + allocText + '</td>' +
     '<td>' + r.current + '</td>' +
     '<td>' + gapText + '</td>' +
+    '<td>' + etdText + '</td>' +
     '<td><span class="' + badgeClass(r.status) + '">' + badgeLabel(r.status) + '</span>' +
     '<div class="progress-cell-bar"><div class="progress-cell-fill" style="width:' + fillWidth + ';background:' + fillColor + '"></div></div></td>';
   allocBody.appendChild(row);

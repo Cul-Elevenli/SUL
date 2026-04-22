@@ -399,6 +399,19 @@ REPORT_DATA.allocRows.forEach(function(r) {
   allocBody.appendChild(row);
 });
 
+// Total row
+var totalRow = document.createElement('tr');
+totalRow.style.fontWeight = '700';
+totalRow.style.background = '#f5f7f9';
+totalRow.innerHTML =
+  '<td><strong>Total</strong></td>' +
+  '<td>' + REPORT_DATA.totalAlloc + '</td>' +
+  '<td>' + REPORT_DATA.totalCurrent + '</td>' +
+  '<td>' + REPORT_DATA.totalGap + '</td>' +
+  '<td>—</td>' +
+  '<td><span class="' + badgeClass(REPORT_DATA.totalPct >= 100 ? '✓ 完成' : REPORT_DATA.totalPct >= 30 ? '推进中' : '需加紧') + '">' + badgeLabel(REPORT_DATA.totalPct >= 100 ? '✓ 完成' : REPORT_DATA.totalPct >= 30 ? '推进中' : '需加紧') + '</span></td>';
+allocBody.appendChild(totalRow);
+
 // Office breakdown
 var officeBody = document.getElementById('officeBody');
 REPORT_DATA.officeRows.forEach(function(r) {

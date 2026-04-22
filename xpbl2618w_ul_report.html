@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XPBL2618W – UL Allocation Report</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background: #f5f5f0;
+  color: #1a1a1a;
+  min-height: 100vh;
+  padding: 40px 48px;
+}
+
+h1 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.vessel-tag {
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+}
+
+.cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  border: 1.5px solid #1a1a1a;
+  padding: 14px 20px;
+  min-width: 150px;
+  flex: 1;
+}
+
+.card-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.card-value {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.card-unit {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.progress-wrap {
+  background: #fff;
+  border: 1.5px solid #1a1a1a;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+
+.progress-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.progress-bar-bg {
+  height: 22px;
+  background: #e8e8e0;
+  border: 1px solid #1a1a1a;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #2c5f8a;
+  transition: width 0.4s ease;
+}
+
+.progress-text {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.section {
+  background: #fff;
+  border: 1.5px solid #1a1a1a;
+  padding: 16px 18px;
+}
+
+.section-title {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th {
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #888;
+  padding: 4px 6px;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 600;
+}
+
+td {
+  padding: 5px 6px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid;
+  border-radius: 2px;
+  font-weight: 700;
+}
+
+.badge-done { color: #2a7a2a; border-color: #2a7a2a; }
+.badge-ok { color: #2c5f8a; border-color: #2c5f8a; }
+.badge-warn { color: #c07a00; border-color: #c07a00; }
+.badge-bad { color: #c01a1a; border-color: #c01a1a; }
+
+.progress-cell-bar {
+  height: 4px;
+  background: #e8e8e0;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 3px;
+}
+.progress-cell-fill {
+  height: 100%;
+  background: #2c5f8a;
+}
+
+.pct {
+  font-size: 10px;
+  color: #888;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.section-full {
+  background: #fff;
+  border: 1.5px solid #1a1a1a;
+  padding: 16px 18px;
+  margin-bottom: 28px;
+}
+
+.footer {
+  font-size: 10px;
+  color: #aaa;
+  letter-spacing: 0.5px;
+}
+
+.tbd {
+  color: #aaa;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .main-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<h1>XPBL2618W – UL Allocation Report</h1>
+<div class="vessel-tag">Vessel: EXPRESS BERLIN &nbsp;|&nbsp; Last Updated: <span id="updatedAt">—</span></div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card-label">Total Allocation</div>
+    <div class="card-value" id="totalAlloc">—</div>
+    <div class="card-unit">TEU (6 ports)</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Current</div>
+    <div class="card-value" id="totalCurrent">—</div>
+    <div class="card-unit">TEU</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Gap</div>
+    <div class="card-value" id="totalGap">—</div>
+    <div class="card-unit">TEU</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Completion</div>
+    <div class="card-value" id="totalPct">—</div>
+    <div class="card-unit">&nbsp;</div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">Overall Completion</div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="overallBar" style="width:0%"></div>
+    <div class="progress-text" id="overallText">—</div>
+  </div>
+</div>
+
+<div class="main-grid">
+  <!-- Allocation Table -->
+  <div class="section">
+    <div class="section-title">UL Allocation vs Current</div>
+    <table>
+      <thead>
+        <tr>
+          <th>POL</th>
+          <th>Alloc</th>
+          <th>Current</th>
+          <th>Gap</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="allocBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Office Breakdown -->
+  <div class="section">
+    <div class="section-title">UL Office Breakdown</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Office</th>
+          <th>Bkgs</th>
+          <th>TEU</th>
+        </tr>
+      </thead>
+      <tbody id="officeBody"></tbody>
+    </table>
+  </div>
+
+  <!-- POD Breakdown -->
+  <div class="section">
+    <div class="section-title">POD Distribution (Top 9)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>POD</th>
+          <th>Bkgs</th>
+          <th>TEU</th>
+        </tr>
+      </thead>
+      <tbody id="podBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section-full">
+  <div class="section-title">Booking Detail Snapshot (UL only)</div>
+  <div style="overflow-x:auto; max-height:400px; overflow-y:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Bkg No.</th>
+          <th>POL</th>
+          <th>POD</th>
+          <th>Delivery</th>
+          <th>20ft</th>
+          <th>40ft</th>
+          <th>TEU</th>
+          <th>Office</th>
+          <th>ETD</th>
+        </tr>
+      </thead>
+      <tbody id="detailBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  UL = Office starting with "UL" &nbsp;|&nbsp; This page is a snapshot at build time, not real-time data.
+</div>
+
+<script>
+// ── Embedded data (injected by build script) ────────────────────────────────
+var REPORT_DATA = {"updatedAt":"2026-04-22T04:09:38.707Z","totalAlloc":2100,"totalCurrent":858,"totalGap":-1242,"totalPct":41,"allocRows":[{"pol":"CNTAO","alloc":300,"current":199,"gap":-101,"pct":66,"status":"推进中"},{"pol":"CNSHA","alloc":300,"current":57,"gap":-243,"pct":19,"status":"需加紧"},{"pol":"CNNGB","alloc":300,"current":83,"gap":-217,"pct":28,"status":"需加紧"},{"pol":"CNNAS","alloc":300,"current":0,"gap":-300,"pct":0,"status":"未开始"},{"pol":"CNSHK","alloc":300,"current":0,"gap":-300,"pct":0,"status":"未开始"},{"pol":"CNXMN","alloc":600,"current":495,"gap":-105,"pct":83,"status":"推进中"},{"pol":"CNXGG","alloc":null,"current":24,"gap":null,"pct":null,"status":"—"}],"officeRows":[{"office":"ULXMN","count":84,"teu":495},{"office":"ULTAO","count":47,"teu":199},{"office":"ULNGB","count":11,"teu":83},{"office":"ULSHA","count":26,"teu":57},{"office":"ULTNJ","count":6,"teu":24}],"podRows":[{"pod":"SAJED","count":60,"teu":440},{"pod":"AEKLF","count":93,"teu":343},{"pod":"PKKHI","count":4,"teu":25},{"pod":"YEADE","count":3,"teu":19},{"pod":"OMSOH","count":6,"teu":17},{"pod":"SDPZU","count":4,"teu":7},{"pod":"JOAQJ","count":2,"teu":3},{"pod":"INMUN","count":1,"teu":2},{"pod":"EGSOK","count":1,"teu":2}],"records":[{"bkgInfo":"CULVXGG2600341","polCd":"CNXGG","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTNJ","frstEtd":"20260424"},{"bkgInfo":"CULVTAO2605051","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605052","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605053","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605055","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":3,"contVol2":0,"teu":3,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605056","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605057","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":5,"teu":10,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605058","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605059","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605060","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605063","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":2,"contVol2":8,"teu":18,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605064","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605065","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605107","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVXMN2601250","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":25,"teu":50,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601251","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":25,"teu":50,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVTAO2605170","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605172","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":5,"teu":10,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVSHA2608969","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2608970","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":1,"teu":3,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2608974","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2608976","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2608978","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVTAO2605244","polCd":"CNTAO","podCd":"OMSOH","delCd":"OMSOH","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVSHA2609067","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVTAO2605250","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605254","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":3,"contVol2":3,"teu":9,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605255","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605257","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVSHA2609079","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":3,"teu":6,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609106","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXMN2601271","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":5,"teu":10,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601272","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":5,"teu":10,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVTAO2605297","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605298","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605299","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605300","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":4,"contVol2":0,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605301","polCd":"CNTAO","podCd":"OMSOH","delCd":"OMSOH","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605302","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605303","polCd":"CNTAO","podCd":"OMSOH","delCd":"OMSOH","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605304","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":1,"contVol2":2,"teu":5,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605305","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVXMN2601274","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601275","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601276","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601277","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVSHA2609119","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609120","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609121","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609122","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609123","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609127","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXMN2601280","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":7,"teu":14,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601281","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":6,"teu":12,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601282","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":5,"teu":10,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601283","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601284","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":3,"contVol2":0,"teu":3,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601285","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601286","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601287","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601292","polCd":"CNXMN","podCd":"PKKHI","delCd":"PKKHI","contVol1":0,"contVol2":6,"teu":12,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601293","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601294","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601295","polCd":"CNXMN","podCd":"YEADE","delCd":"YEADE","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601296","polCd":"CNXMN","podCd":"SDPZU","delCd":"SDPZU","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601297","polCd":"CNXMN","podCd":"SDPZU","delCd":"SDPZU","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601298","polCd":"CNXMN","podCd":"PKKHI","delCd":"PKKHI","contVol1":3,"contVol2":0,"teu":3,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVTAO2605379","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605380","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605381","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605382","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605383","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605384","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":3,"teu":6,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605385","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605386","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVSHA2609198","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609199","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609203","polCd":"CNSHA","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609204","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609205","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609206","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEKLF","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609255","polCd":"CNSHA","podCd":"YEADE","delCd":"YEADE","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXGG2600381","polCd":"CNXGG","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTNJ","frstEtd":"20260428"},{"bkgInfo":"CULVNGB2612839","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612840","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":5,"teu":10,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612842","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612843","polCd":"CNNGB","podCd":"YEADE","delCd":"YEADE","contVol1":0,"contVol2":8,"teu":16,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612847","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612850","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612851","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":3,"teu":6,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612852","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVNGB2612853","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVXMN2601346","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVSHA2609283","polCd":"CNSHA","podCd":"SDPZU","delCd":"SDPZU","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXMN2601347","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601348","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXGG2600382","polCd":"CNXGG","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTNJ","frstEtd":"20260428"},{"bkgInfo":"CULVXMN2601349","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVSHA2609306","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXMN2601350","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":3,"contVol2":0,"teu":3,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601351","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601352","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601353","polCd":"CNXMN","podCd":"JOAQJ","delCd":"JOAQJ","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601354","polCd":"CNXMN","podCd":"SDPZU","delCd":"SDPZU","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601355","polCd":"CNXMN","podCd":"PKKHI","delCd":"PKKHI","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601356","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601357","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601358","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601359","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":3,"contVol2":0,"teu":3,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601360","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":4,"contVol2":0,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601361","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601362","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601363","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601364","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601365","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601366","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601367","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601368","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":6,"contVol2":0,"teu":6,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601369","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":10,"contVol2":0,"teu":10,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601370","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601371","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":8,"contVol2":0,"teu":8,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601373","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601374","polCd":"CNXMN","podCd":"OMSOH","delCd":"OMSOH","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601375","polCd":"CNXMN","podCd":"OMSOH","delCd":"OMSOH","contVol1":4,"contVol2":0,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601376","polCd":"CNXMN","podCd":"OMSOH","delCd":"OMSOH","contVol1":4,"contVol2":0,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601377","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601378","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601379","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601380","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601381","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601382","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601383","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":3,"teu":6,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601384","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601385","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601386","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601387","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEKLF","contVol1":10,"contVol2":0,"teu":10,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601388","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":1,"contVol2":1,"teu":3,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601389","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601390","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601391","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601392","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":19,"teu":38,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601393","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":20,"teu":40,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601394","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601395","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":6,"teu":12,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVTAO2605467","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605468","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605469","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605470","polCd":"CNTAO","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":2,"teu":4,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605471","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605472","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEKLF","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605473","polCd":"CNTAO","podCd":"AEKLF","delCd":"AEJEA","contVol1":14,"contVol2":0,"teu":14,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVXGG2600387","polCd":"CNXGG","podCd":"AEKLF","delCd":"AEJEA","contVol1":6,"contVol2":0,"teu":6,"bkgOfcCd":"ULTNJ","frstEtd":"20260428"},{"bkgInfo":"CULVXGG2600388","polCd":"CNXGG","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTNJ","frstEtd":"20260428"},{"bkgInfo":"CULVXGG2600390","polCd":"CNXGG","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTNJ","frstEtd":"20260428"},{"bkgInfo":"CULVTAO2605492","polCd":"CNTAO","podCd":"PKKHI","delCd":"PKKHI","contVol1":0,"contVol2":4,"teu":8,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVTAO2605493","polCd":"CNTAO","podCd":"INMUN","delCd":"INMUN","contVol1":2,"contVol2":0,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVXMN2601397","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":5,"contVol2":0,"teu":5,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601398","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVTAO2605496","polCd":"CNTAO","podCd":"EGSOK","delCd":"EGSOK","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULTAO","frstEtd":"20260430"},{"bkgInfo":"CULVXMN2601402","polCd":"CNXMN","podCd":"JOAQJ","delCd":"JOAQJ","contVol1":1,"contVol2":0,"teu":1,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVNGB2612970","polCd":"CNNGB","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVXMN2601406","polCd":"CNXMN","podCd":"AEKLF","delCd":"AEKLF","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVNGB2612975","polCd":"CNNGB","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":15,"teu":30,"bkgOfcCd":"ULNGB","frstEtd":"20260505"},{"bkgInfo":"CULVXMN2601408","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601409","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601410","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601411","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601412","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVXMN2601414","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVSHA2609371","polCd":"CNSHA","podCd":"AEKLF","delCd":"AEJEA","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXMN2601415","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"},{"bkgInfo":"CULVSHA2609372","polCd":"CNSHA","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVSHA2609373","polCd":"CNSHA","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULSHA","frstEtd":"20260503"},{"bkgInfo":"CULVXMN2601416","polCd":"CNXMN","podCd":"SAJED","delCd":"SAJED","contVol1":0,"contVol2":1,"teu":2,"bkgOfcCd":"ULXMN","frstEtd":"20260508"}]};
+
+function teu(r) {
+  return (parseInt(r.contVol1)||0) + (parseInt(r.contVol2)||0)*2;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return d.substring(0, 10);
+}
+
+function pctColor(pct) {
+  if (pct >= 100) return '#2a7a2a';
+  if (pct >= 60) return '#2c5f8a';
+  if (pct >= 30) return '#c07a00';
+  return '#c01a1a';
+}
+
+function badgeClass(status) {
+  if (status === '✓ 完成') return 'badge badge-done';
+  if (status === '推进中') return 'badge badge-ok';
+  if (status === '需加紧') return 'badge badge-warn';
+  if (status === '未开始') return 'badge badge-bad';
+  return 'badge badge-ok';
+}
+
+function badgeLabel(status) {
+  if (status === '✓ 完成') return 'Done';
+  if (status === '推进中') return 'On Track';
+  if (status === '需加紧') return 'Behind';
+  if (status === '未开始') return 'None';
+  return status;
+}
+
+// ── Allocation table ─────────────────────────────────────────────────────────
+var allocRows = REPORT_DATA.allocRows; // [{pol, alloc, current, gap, pct, status}]
+var totalAlloc = REPORT_DATA.totalAlloc;
+var totalCurrent = REPORT_DATA.totalCurrent;
+var totalGap = REPORT_DATA.totalGap;
+var totalPct = REPORT_DATA.totalPct;
+
+document.getElementById('updatedAt').textContent = REPORT_DATA.updatedAt;
+document.getElementById('totalAlloc').textContent = totalAlloc;
+document.getElementById('totalCurrent').textContent = totalCurrent;
+document.getElementById('totalGap').textContent = totalGap;
+document.getElementById('totalPct').textContent = totalPct + '%';
+
+document.getElementById('overallBar').style.width = Math.min(totalPct, 100) + '%';
+document.getElementById('overallText').textContent = totalPct + '%';
+
+var allocBody = document.getElementById('allocBody');
+allocRows.forEach(function(r) {
+  var row = document.createElement('tr');
+
+  var fillColor = pctColor(r.pct);
+  var fillWidth = Math.min(r.pct, 100) + '%';
+
+  var allocText = r.alloc === null ? '<span class="tbd">TBD</span>' : r.alloc;
+  var gapText = r.gap === null ? '<span class="tbd">—</span>' : r.gap;
+
+  row.innerHTML =
+    '<td><strong>' + r.pol + '</strong></td>' +
+    '<td>' + allocText + '</td>' +
+    '<td>' + r.current + '</td>' +
+    '<td>' + gapText + '</td>' +
+    '<td><span class="' + badgeClass(r.status) + '">' + badgeLabel(r.status) + '</span>' +
+    '<div class="progress-cell-bar"><div class="progress-cell-fill" style="width:' + fillWidth + ';background:' + fillColor + '"></div></div></td>';
+  allocBody.appendChild(row);
+});
+
+// ── Office breakdown ─────────────────────────────────────────────────────────
+var officeRows = REPORT_DATA.officeRows; // [{office, count, teu}]
+var officeBody = document.getElementById('officeBody');
+officeRows.forEach(function(r) {
+  var row = document.createElement('tr');
+  row.innerHTML =
+    '<td><strong>' + r.office + '</strong></td>' +
+    '<td>' + r.count + '</td>' +
+    '<td>' + r.teu + '</td>';
+  officeBody.appendChild(row);
+});
+
+// ── POD breakdown ────────────────────────────────────────────────────────────
+var podRows = REPORT_DATA.podRows; // [{pod, count, teu}]
+var podBody = document.getElementById('podBody');
+podRows.forEach(function(r) {
+  var row = document.createElement('tr');
+  row.innerHTML =
+    '<td><strong>' + r.pod + '</strong></td>' +
+    '<td>' + r.count + '</td>' +
+    '<td>' + r.teu + '</td>';
+  podBody.appendChild(row);
+});
+
+// ── Detail snapshot ─────────────────────────────────────────────────────────
+var records = REPORT_DATA.records; // [{bkgInfo, polCd, podCd, delCd, contVol1, contVol2, teu, bkgOfcCd, frstEtd}]
+var detailBody = document.getElementById('detailBody');
+records.forEach(function(r) {
+  var row = document.createElement('tr');
+  row.innerHTML =
+    '<td>' + r.bkgInfo + '</td>' +
+    '<td>' + r.polCd + '</td>' +
+    '<td>' + r.podCd + '</td>' +
+    '<td>' + (r.delCd||'—') + '</td>' +
+    '<td>' + r.contVol1 + '</td>' +
+    '<td>' + r.contVol2 + '</td>' +
+    '<td><strong>' + r.teu + '</strong></td>' +
+    '<td>' + r.bkgOfcCd + '</td>' +
+    '<td>' + fmtDate(r.frstEtd) + '</td>';
+  detailBody.appendChild(row);
+});
+</script>
+</body>
+</html>
